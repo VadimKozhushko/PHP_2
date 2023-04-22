@@ -2,18 +2,19 @@
     "name": "geekbrains/level_two",
     "autoload": {
         "psr-4": {
-            "GeekBrains\\LevelTwo\\": "src/"
+            "GeekBrains\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "VadimKozhushko",
-            "email": "kvad230885@gmail.com"
+        "name": "VadimKozhushko",
+        "email": "kvad230885@gmail.com"
         }
         ],
         
     "require": {
         "fakerphp/faker": "^1.21",
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "symfony/polyfill-uuid": "^1.27"
     }
 }

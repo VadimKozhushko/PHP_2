@@ -1,20 +1,53 @@
 <?php
 
-namespace GeekBrains\LevelTwo\Blog;
+namespace GeekBrains\Blog;
 
-use GeekBrains\LevelTwo\Person\Person;
+use GeekBrains\Person\User;
+use GeekBrains\Person\UUID;
 
 class Comment
 {
     public function __construct(
-        private int $id,
-        private Person $author,
+        private UUID $uuid,
+        private User $author,
         private Post $post,
         private string $text
     ) {
     }
 
     public function __toString()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Get the value of uuid
+     */
+    public function uuid(): UUID
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * Get the value of author
+     */
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
+
+    /**
+     * Get the value of post
+     */
+    public function getPost(): Post
+    {
+        return $this->post;
+    }
+
+    /**
+     * Get the value of text
+     */
+    public function getText(): string
     {
         return $this->text;
     }

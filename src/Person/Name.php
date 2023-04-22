@@ -1,8 +1,6 @@
 <?php
 
-
-
-namespace GeekBrains\LevelTwo\Person;
+namespace GeekBrains\Person;
 
 
 class Name
@@ -15,5 +13,21 @@ class Name
     public function __toString()
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * Get the value of firstName
+     */
+    public function first()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Get the value of lastName
+     */
+    public function last()
+    {
+        return $this->lastName;
     }
 }

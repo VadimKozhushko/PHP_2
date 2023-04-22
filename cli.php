@@ -1,53 +1,33 @@
 <?php
 
+use GeekBrains\Blog\Exceptions\AppException;
+use GeekBrains\Commands\Arguments;
+use GeekBrains\Commands\CreatePostCommand;
+use GeekBrains\Repositories\SqliteUsersRepository;
+use GeekBrains\Commands\CreateUserCommand;
+use GeekBrains\Repositories\SqlitePostsRepository;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-use GeekBrains\LevelTwo\Blog\Comment;
-use GeekBrains\LevelTwo\Blog\Post;
-use GeekBrains\LevelTwo\Person\Name;
-use GeekBrains\LevelTwo\Person\Person;
+$connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
+
+$usersRepository = new SqliteUsersRepository($connection);
 
 
+$command = new CreateUserCommand($usersRepository);
 
+try {
+    $command->handle(Arguments::fromArgv($argv));
+} catch (AppException $e) {
+    echo "{$e->getMessage()}\n";
+}
+
+///Проверка создания поста
+$user = $usersRepository->getByUsername("ivan");
 $faker = Faker\Factory::create('ru_RU');
 
-if ($argv > 1) {
-    switch ($argv[1]) {
-        case 'user':
-            print getFakerUser($faker);
-            break;
-        case 'post':
-            print getFakerPost($faker, getFakerUser($faker));
-            break;
-        case 'comment':
-            $user = getFakerUser($faker);
-            print getFakerComment($faker, $user, getFakerPost($faker, $user));
-            break;
-    }
-}
+$postsRepository = new SqlitePostsRepository($connection);
 
-function getFakerUser($faker)
-{
-    $firstname = $faker->firstName();
-    $lastname = $faker->lastName();
-    $user = new Person(1, new Name($firstname, $lastname), new DateTimeImmutable());
-    return $user;
-}
+$postCommand = new CreatePostCommand($postsRepository);
 
-function getFakerPost($faker, $user)
-{
-    $text = $faker->text(200);
-    $header = $faker->text(20);
-
-    $post = new Post(1, $user, $header, $text);
-    return $post;
-}
-
-function getFakerComment($faker, $user, $post)
-{
-
-    $textComment = $faker->text(100);
-    $comment = new Comment(1, $user, $post, $textComment);
-
-    return $comment;
-}
+$postCommand->handle($user, $faker);
