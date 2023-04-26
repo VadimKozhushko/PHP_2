@@ -6,7 +6,7 @@ use GeekBrains\Blog\Comment;
 use GeekBrains\Blog\Post;
 use GeekBrains\Person\User;
 use GeekBrains\Person\UUID;
-use GeekBrains\Repositories\CommentsRepositoryInterface;
+use GeekBrains\Repositories\Comments\CommentsRepositoryInterface;
 
 class CreateCommentCommand
 {

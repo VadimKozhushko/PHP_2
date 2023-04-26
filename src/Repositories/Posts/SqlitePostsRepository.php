@@ -1,11 +1,12 @@
 <?php
 
-namespace GeekBrains\Repositories;
+namespace GeekBrains\Repositories\Posts;
 
 use GeekBrains\Blog\Exceptions\PostNotFoundException;
 use GeekBrains\Blog\Post;
 use GeekBrains\Person\User;
 use GeekBrains\Person\UUID;
+use GeekBrains\Repositories\Users\SqliteUsersRepository;
 use PDO;
 
 class SqlitePostsRepository implements PostsRepositoryInterface
@@ -30,14 +31,13 @@ class SqlitePostsRepository implements PostsRepositoryInterface
             ':text' => $post->getText(),
         ]);
     }
-    public function get(UUID $uuid, User $user): Post
+    public function get(UUID $uuid): Post
     {
         $statement = $this->connection->prepare(
-            'SELECT * FROM posts WHERE uuid = :uuid and author_uuid = :author_uuid'
+            'SELECT * FROM posts WHERE uuid = :uuid'
         );
         $statement->execute([
             ':uuid' => (string)$uuid,
-            ':author_uuid' => (string)$user->uuid(),
         ]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -46,6 +46,9 @@ class SqlitePostsRepository implements PostsRepositoryInterface
                 "Cannot get post: $uuid"
             );
         }
+
+        $userRepository = new SqliteUsersRepository($this->connection);
+        $user = $userRepository->get(new UUID($result['author_uuid']));
 
         return new Post(
             new UUID($result['uuid']),

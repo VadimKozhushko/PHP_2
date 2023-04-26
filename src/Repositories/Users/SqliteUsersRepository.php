@@ -1,6 +1,6 @@
 <?php
 
-namespace GeekBrains\Repositories;
+namespace GeekBrains\Repositories\Users;
 
 use GeekBrains\Person\UUID, GeekBrains\Person\Name;
 use PDO;
