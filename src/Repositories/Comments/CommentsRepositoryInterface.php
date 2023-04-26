@@ -1,6 +1,6 @@
 <?php
 
-namespace GeekBrains\Repositories;
+namespace GeekBrains\Repositories\Comments;
 
 use GeekBrains\Blog\Comment;
 use GeekBrains\Blog\Post;
@@ -10,5 +10,5 @@ use GeekBrains\Person\UUID;
 interface CommentsRepositoryInterface
 {
     public function save(Comment $comment): void;
-    public function get(UUID $uuid, User $user, Post $post): Comment;
+    public function get(UUID $uuid): Comment;
 }

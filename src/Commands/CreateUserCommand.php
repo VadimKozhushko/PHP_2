@@ -8,7 +8,7 @@ use GeekBrains\Blog\Exceptions\UserNotFoundException;
 use GeekBrains\Person\Name;
 use GeekBrains\Person\User;
 use GeekBrains\Person\UUID;
-use GeekBrains\Repositories\UsersRepositoryInterface;
+use GeekBrains\Repositories\Users\UsersRepositoryInterface;
 
 class CreateUserCommand
 {
