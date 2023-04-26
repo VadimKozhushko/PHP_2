@@ -5,7 +5,7 @@ namespace GeekBrains\Commands;
 use GeekBrains\Blog\Post;
 use GeekBrains\Person\User;
 use GeekBrains\Person\UUID;
-use GeekBrains\Repositories\PostsRepositoryInterface;
+use GeekBrains\Repositories\Posts\PostsRepositoryInterface;
 
 class CreatePostCommand
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GeekBrains\Repositories;
+namespace GeekBrains\Repositories\Posts;
 
 use GeekBrains\Blog\Post;
 use GeekBrains\Person\User;
@@ -10,5 +10,5 @@ interface PostsRepositoryInterface
 {
     public function save(Post $post): void;
 
-    public function get(UUID $uuid, User $user): Post;
+    public function get(UUID $uuid): Post;
 }

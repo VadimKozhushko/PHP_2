@@ -1,12 +1,14 @@
 <?php
 
-namespace GeekBrains\Repositories;
+namespace GeekBrains\Repositories\Comments;
 
 use GeekBrains\Blog\Comment;
 use GeekBrains\Blog\Exceptions\CommentNotFoundException;
 use GeekBrains\Blog\Post;
 use GeekBrains\Person\User;
 use GeekBrains\Person\UUID;
+use GeekBrains\Repositories\Posts\SqlitePostsRepository;
+use GeekBrains\Repositories\Users\SqliteUsersRepository;
 use PDO;
 
 class SqliteCommentsRepository implements CommentsRepositoryInterface
@@ -29,16 +31,14 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
             ':text' => $comment->getText(),
         ]);
     }
-    public function get(UUID $uuid, User $user, Post $post): Comment
+    public function get(UUID $uuid): Comment
     {
 
         $statement = $this->connection->prepare(
-            'SELECT * FROM comments WHERE uuid = :uuid and author_uuid = :author_uuid and post_uuid = :post_uuid'
+            'SELECT * FROM comments WHERE uuid = :uuid'
         );
         $statement->execute([
             ':uuid' => (string)$uuid,
-            ':author_uuid' => (string)$user->uuid(),
-            ':post_uuid' => (string)$post->uuid(),
         ]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -47,6 +47,13 @@ class SqliteCommentsRepository implements CommentsRepositoryInterface
                 "Cannot get post: $uuid"
             );
         }
+
+        $userRepository = new SqliteUsersRepository($this->connection);
+        $user = $userRepository->get(new UUID($result['author_uuid']));
+
+        $postRepository = new SqlitePostsRepository($this->connection);
+        $post = $postRepository->get(new UUID($result['post_uuid']));
+
 
         return new Comment(
             new UUID($result['uuid']),

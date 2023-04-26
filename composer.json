@@ -7,14 +7,21 @@
     },
     "authors": [
         {
-        "name": "VadimKozhushko",
-        "email": "kvad230885@gmail.com"
+        "name": "Sergey Vasenin",
+        "email": "inetwork@inbox.ru"
         }
         ],
         
     "require": {
+        "symfony/polyfill-uuid": "^1.27"
+    },
+    "require-dev": {
         "fakerphp/faker": "^1.21",
         "roave/security-advisories": "dev-latest",
-        "symfony/polyfill-uuid": "^1.27"
-    }
+        "phpunit/phpunit": "^10.1"
+    },
+    "scripts": {
+        "test": "phpunit tests --testdox --colors"
+        }
+        
 }

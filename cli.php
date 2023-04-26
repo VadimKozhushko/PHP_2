@@ -3,9 +3,9 @@
 use GeekBrains\Blog\Exceptions\AppException;
 use GeekBrains\Commands\Arguments;
 use GeekBrains\Commands\CreatePostCommand;
-use GeekBrains\Repositories\SqliteUsersRepository;
+use GeekBrains\Repositories\Users\SqliteUsersRepository;
 use GeekBrains\Commands\CreateUserCommand;
-use GeekBrains\Repositories\SqlitePostsRepository;
+use GeekBrains\Repositories\Posts\SqlitePostsRepository;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
