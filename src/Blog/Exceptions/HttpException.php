@@ -2,6 +2,6 @@
 
 namespace GeekBrains\LevelTwo\Blog\Exceptions;
 
-class AppException extends \Exception
+class HttpException extends AppException
 {
 }
