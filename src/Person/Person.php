@@ -1,27 +1,20 @@
 <?php
-
-
 namespace GeekBrains\LevelTwo\Person;
 
-use DateTimeImmutable;
-use GeekBrains\LevelTwo\Person\Name;
+use \DateTimeImmutable;
 
 class Person
 {
-    public function __construct(
-        private int $id,
-        private Name $name,
-        private DateTimeImmutable $registeredOn
-    ) {
-    }
-    public function __toString()
-    {
-        return $this->name->__toString();
+    private Name $name;
+    private DateTimeImmutable $registeredOn;
+
+    public function __construct(Name $name, DateTimeImmutable $registeredOn) {
+        $this->registeredOn = $registeredOn;
+        $this->name = $name;
     }
 
-    
-    public function getId()
+    public function __toString()
     {
-        return $this->id;
+        return $this->name . ' (на сайте с ' . $this->registeredOn->format('Y-m-d') . ')';
     }
 }

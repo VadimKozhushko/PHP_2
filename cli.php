@@ -1,53 +1,40 @@
 <?php
+require_once __DIR__ .  "/vendor/autoload.php";
 
-require_once __DIR__ . '/vendor/autoload.php';
+use Geekbrains\LevelTwo\Blog\Commands\Arguments;
+use Geekbrains\LevelTwo\Blog\Commands\CreateCommentCommand;
+use Geekbrains\LevelTwo\Blog\Commands\CreatePostCommand;
+use Geekbrains\LevelTwo\Blog\Commands\CreateUserCommand;
+use Geekbrains\LevelTwo\Blog\Commands\OtherArguments;
+use Geekbrains\LevelTwo\Blog\Comment;
+use Geekbrains\LevelTwo\Blog\Post;
+use Geekbrains\LevelTwo\Blog\Repositories\CommentsRepository\SqliteCommentsRepository;
+use Geekbrains\LevelTwo\Blog\Repositories\PostRepositories\SqlitePostsRepository;
+use Geekbrains\LevelTwo\Blog\Repositories\UsersRepository\SqliteUsersRepository;
+use \Geekbrains\LevelTwo\Blog\Exceptions\CommandException;
+use Geekbrains\LevelTwo\Blog\UUID;
+use \Geekbrains\LevelTwo\Blog\Exceptions\ArgumentsException;
+use Geekbrains\LevelTwo\Blog\User;
+use Geekbrains\LevelTwo\Person\Name;
 
-use GeekBrains\LevelTwo\Blog\Comment;
-use GeekBrains\LevelTwo\Blog\Post;
-use GeekBrains\LevelTwo\Person\Name;
-use GeekBrains\LevelTwo\Person\Person;
+$connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
+$usersRepository = new SqliteUsersRepository($connection);
 
 
+try {
 
-$faker = Faker\Factory::create('ru_RU');
+    $postRepository->delete(new UUID('02000775-c963-43a3-b644-36bf95caf7c4'));
+    $command = new CreateUserCommand($usersRepository);
+    $command->handle(Arguments::fromArgv($argv));
 
-if ($argv > 1) {
-    switch ($argv[1]) {
-        case 'user':
-            print getFakerUser($faker);
-            break;
-        case 'post':
-            print getFakerPost($faker, getFakerUser($faker));
-            break;
-        case 'comment':
-            $user = getFakerUser($faker);
-            print getFakerComment($faker, $user, getFakerPost($faker, $user));
-            break;
-    }
-}
+    $user = new User(new UUID(UUID::random()), new Name('Lev', 'Petrushin'), 'lev2022');
+    $post = $postCommand->get(new UUID('acbc10fe-78a2-4c47-8833-8ebbc34a9bcb'));
+    var_dump($post);
+    $user = new User(new UUID(UUID::random()), new Name('Lev', 'Petrushin'), 'lev2022');
 
-function getFakerUser($faker)
-{
-    $firstname = $faker->firstName();
-    $lastname = $faker->lastName();
-    $user = new Person(1, new Name($firstname, $lastname), new DateTimeImmutable());
-    return $user;
-}
-
-function getFakerPost($faker, $user)
-{
-    $text = $faker->text(200);
-    $header = $faker->text(20);
-
-    $post = new Post(1, $user, $header, $text);
-    return $post;
-}
-
-function getFakerComment($faker, $user, $post)
-{
-
-    $textComment = $faker->text(100);
-    $comment = new Comment(1, $user, $post, $textComment);
-
-    return $comment;
+    $post = $postCommand->getPost(new UUID('acbc10fe-78a2-4c47-8833-8ebbc34a9bcb'));
+} catch (CommandException $ex) {
+    echo $ex->getMessage();
+} catch (ArgumentsException $e) {
+    echo $e->getMessage();
 }
