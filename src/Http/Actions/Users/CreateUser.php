@@ -33,8 +33,10 @@ class CreateUser implements ActionInterface
                 ),
                 $request->jsonBodyField('username')
             );
+
         } catch (HttpException $e) {
             return new ErrorResponse($e->getMessage());
+
         }
 
         $this->usersRepository->save($user);

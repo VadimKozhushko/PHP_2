@@ -5,6 +5,7 @@ namespace GeekBrains\LevelTwo;
 use GeekBrains\LevelTwo\Blog\Exceptions\PostNotFoundException;
 use GeekBrains\LevelTwo\Blog\Post;
 use GeekBrains\LevelTwo\Blog\Repositories\PostsRepository\SqlitePostsRepository;
+use GeekBrains\LevelTwo\Blog\Repositories\UsersRepository\SqliteUsersRepository;
 use GeekBrains\LevelTwo\Blog\User;
 use GeekBrains\LevelTwo\Blog\UUID;
 use GeekBrains\LevelTwo\Person\Name;

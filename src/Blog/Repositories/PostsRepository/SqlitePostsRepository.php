@@ -8,9 +8,9 @@ use GeekBrains\LevelTwo\Blog\Exceptions\UserNotFoundException;
 use GeekBrains\LevelTwo\Blog\Post;
 use GeekBrains\LevelTwo\Blog\Repositories\UsersRepository\SqliteUsersRepository;
 use GeekBrains\LevelTwo\Blog\UUID;
+// use GeekBrains\Repositories\Posts\PostsRepositoryInterface;
 
-
-class SqlitePostsRepository /*implements PostsRepositoryInterface*/
+class SqlitePostsRepository implements PostsRepositoryInterface
 {
     private \PDO $connection;
 
@@ -65,8 +65,8 @@ class SqlitePostsRepository /*implements PostsRepositoryInterface*/
             );
         }
 
-        $userRepository = new SqliteUsersRepository($this->connection);
-        $user = $userRepository->get(new UUID($result['author_uuid']));
+        $UsersRepository = new SqliteUsersRepository($this->connection);
+        $user = $UsersRepository->get(new UUID($result['author_uuid']));
 
         return new Post(
             new UUID($result['uuid']),
@@ -74,16 +74,5 @@ class SqlitePostsRepository /*implements PostsRepositoryInterface*/
             $result['title'],
             $result['text']
         );
-    }
-
-    public function delete(UUID $uuid): void
-    {
-        $statement = $this->connection->prepare(
-            'DELETE FROM posts WHERE posts.uuid=:uuid;'
-        );
-
-        $statement->execute([
-            ':uuid' => $uuid,
-        ]);
     }
 }

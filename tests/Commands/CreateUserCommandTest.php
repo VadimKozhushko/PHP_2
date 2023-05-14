@@ -31,18 +31,17 @@ class CreateUserCommandTest extends TestCase
     // Тест проверяет, что команда действительно требует имя пользователя
     public function testItRequiresFirstName(): void
     {
-        // $usersRepository - это объект анонимного класса,
-        // реализующего контракт UsersRepositoryInterface
-        $usersRepository = new class implements UsersRepositoryInterface
-        {
+// $usersRepository - это объект анонимного класса,
+// реализующего контракт UsersRepositoryInterface
+        $usersRepository = new class implements UsersRepositoryInterface {
             public function save(User $user): void
             {
-                // Ничего не делаем
+// Ничего не делаем
             }
 
             public function get(UUID $uuid): User
             {
-                // И здесь ничего не делаем
+// И здесь ничего не делаем
                 throw new UserNotFoundException("Not found");
             }
 
@@ -53,13 +52,13 @@ class CreateUserCommandTest extends TestCase
                 throw new UserNotFoundException("Not found");
             }
         };
-        // Передаём объект анонимного класса
-        // в качестве реализации UsersRepositoryInterface
+// Передаём объект анонимного класса
+// в качестве реализации UsersRepositoryInterface
         $command = new CreateUserCommand($usersRepository);
-        // Ожидаем, что будет брошено исключение
+// Ожидаем, что будет брошено исключение
         $this->expectException(ArgumentsException::class);
         $this->expectExceptionMessage('No such argument: first_name');
-        // Запускаем команду
+// Запускаем команду
         $command->handle(new Arguments(['username' => 'Ivan']));
     }
 
@@ -67,14 +66,14 @@ class CreateUserCommandTest extends TestCase
     // Тест проверяет, что команда действительно требует фамилию пользователя
     public function testItRequiresLastName(): void
     {
-        // Передаём в конструктор команды объект, возвращаемый нашей функцией
+// Передаём в конструктор команды объект, возвращаемый нашей функцией
         $command = new CreateUserCommand($this->makeUsersRepository());
         $this->expectException(ArgumentsException::class);
         $this->expectExceptionMessage('No such argument: last_name');
         $command->handle(new Arguments([
             'username' => 'Ivan',
-            // Нам нужно передать имя пользователя,
-            // чтобы дойти до проверки наличия фамилии
+// Нам нужно передать имя пользователя,
+// чтобы дойти до проверки наличия фамилии
             'first_name' => 'Ivan',
         ]));
     }
@@ -83,8 +82,7 @@ class CreateUserCommandTest extends TestCase
     // Функция возвращает объект типа UsersRepositoryInterface
     private function makeUsersRepository(): UsersRepositoryInterface
     {
-        return new class implements UsersRepositoryInterface
-        {
+        return new class implements UsersRepositoryInterface {
             public function save(User $user): void
             {
             }
@@ -106,15 +104,14 @@ class CreateUserCommandTest extends TestCase
     public function testItSavesUserToRepository(): void
     {
         // Создаём объект анонимного класса
-        $usersRepository = new class implements UsersRepositoryInterface
-        {
-            // В этом свойстве мы храним информацию о том,
-            // был ли вызван метод save
+        $usersRepository = new class implements UsersRepositoryInterface {
+// В этом свойстве мы храним информацию о том,
+// был ли вызван метод save
             private bool $called = false;
 
             public function save(User $user): void
             {
-                // Запоминаем, что метод save был вызван
+// Запоминаем, что метод save был вызван
                 $this->called = true;
             }
 
@@ -128,10 +125,10 @@ class CreateUserCommandTest extends TestCase
             {
                 throw new UserNotFoundException("Not found");
             }
-            // Этого метода нет в контракте UsersRepositoryInterface,
-            // но ничто не мешает его добавить.
-            // С помощью этого метода мы можем узнать,
-            // был ли вызван метод save
+// Этого метода нет в контракте UsersRepositoryInterface,
+// но ничто не мешает его добавить.
+// С помощью этого метода мы можем узнать,
+// был ли вызван метод save
             public function wasCalled(): bool
             {
                 return $this->called;
@@ -149,4 +146,5 @@ class CreateUserCommandTest extends TestCase
 
         $this->assertTrue($usersRepository->wasCalled());
     }
+
 }

@@ -2,7 +2,7 @@
 
 namespace GeekBrains\LevelTwo\Blog;
 
-class Comments
+class Comment
 {
 
     public function __construct(
@@ -10,7 +10,8 @@ class Comments
         private User $user,
         private Post $post,
         private string $text
-    ) {
+    )
+    {
     }
 
     /**
@@ -19,6 +20,14 @@ class Comments
     public function uuid(): UUID
     {
         return $this->uuid;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     /**
@@ -69,8 +78,8 @@ class Comments
         $this->text = $text;
     }
 
-    public function __toString()
-    {
+    public function __toString() {
         return $this->user . " пишет Коммент " . $this->text;
     }
+
 }

@@ -12,7 +12,8 @@ class Post
         private User   $user,
         private string $title,
         private string $text,
-    ) {
+    )
+    {
     }
 
     /**

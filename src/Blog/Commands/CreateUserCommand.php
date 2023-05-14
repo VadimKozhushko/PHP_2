@@ -16,11 +16,12 @@ use GeekBrains\LevelTwo\Person\Name;
 class CreateUserCommand
 {
 
-    // Команда зависит от контракта репозитория пользователей,
-    // а не от конкретной реализации
+// Команда зависит от контракта репозитория пользователей,
+// а не от конкретной реализации
     public function __construct(
         private UsersRepositoryInterface $usersRepository
-    ) {
+    )
+    {
     }
 
     /**
@@ -31,9 +32,9 @@ class CreateUserCommand
     {
         $username = $arguments->get('username');
 
-        // Проверяем, существует ли пользователь в репозитории
+// Проверяем, существует ли пользователь в репозитории
         if ($this->userExists($username)) {
-            // Бросаем исключение, если пользователь уже существует
+// Бросаем исключение, если пользователь уже существует
             throw new CommandException("User already exists: $username");
         }
         // Сохраняем пользователя в репозиторий
@@ -41,19 +42,21 @@ class CreateUserCommand
             UUID::random(),
             new Name(
                 $arguments->get('first_name'),
-                $arguments->get('last_name')
-            ),
+                $arguments->get('last_name')),
             $username,
         ));
     }
     private function userExists(string $username): bool
     {
         try {
-            // Пытаемся получить пользователя из репозитория
+        // Пытаемся получить пользователя из репозитория
             $this->usersRepository->getByUsername($username);
         } catch (UserNotFoundException) {
             return false;
         }
         return true;
     }
+
+
+
 }

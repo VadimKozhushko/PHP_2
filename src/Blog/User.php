@@ -1,5 +1,4 @@
 <?php
-
 namespace GeekBrains\LevelTwo\Blog;
 
 use GeekBrains\LevelTwo\Person\Name;
@@ -68,4 +67,6 @@ class User
     {
         $this->username = $username;
     }
+
+
 }

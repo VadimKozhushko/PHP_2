@@ -51,10 +51,11 @@ class SqliteUsersRepository implements UsersRepositoryInterface
             ':uuid' => (string)$user->uuid(),
             ':username' => $user->username(),
         ]);
+
     }
 
     // Также добавим метод для получения
-    // пользователя по его UUID
+        // пользователя по его UUID
     /**
      * @throws UserNotFoundException
      * @throws InvalidArgumentException
@@ -83,7 +84,7 @@ class SqliteUsersRepository implements UsersRepositoryInterface
             ':username' => $username,
         ]);
 
-        return $this->getUser($statement, $username);
+       return $this->getUser($statement, $username);
     }
 
     /**
@@ -105,4 +106,6 @@ class SqliteUsersRepository implements UsersRepositoryInterface
             $result['username'],
         );
     }
+
+
 }
