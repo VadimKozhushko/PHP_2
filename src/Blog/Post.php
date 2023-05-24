@@ -1,108 +1,53 @@
 <?php
 
-namespace GeekBrains\LevelTwo\Blog;
+namespace GeekBrains\Blog;
 
+use GeekBrains\Person\User;
+use GeekBrains\Person\UUID;
 
 class Post
 {
-
-
     public function __construct(
-        private UUID   $uuid,
-        private User   $user,
-        private string $title,
-        private string $text,
-    )
+        private UUID $uuid,
+        private User $author,
+        private string $header,
+        private string $text
+    ) {
+    }
+    public function __toString()
     {
+        return $this->header . ' >>> ' . $this->text;
     }
 
     /**
-     * @return UUID
+     * Get the value of author
      */
-    public function uuid(): UUID
+    public function getAuthor()
     {
-        return $this->uuid;
+        return $this->author;
     }
 
     /**
-     * @param UUID $uuid
+     * Get the value of header
      */
-    public function setUuid(UUID $uuid): void
+    public function getHeader()
     {
-        $this->uuid = $uuid;
+        return $this->header;
     }
 
     /**
-     * @return string
+     * Get the value of text
      */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-
-
-    /**
-     * @return int
-     */
-    public function id(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
 
     /**
-     * @param string $text
+     * Get the value of uuid
      */
-    public function setText(string $text): Post
+    public function uuid()
     {
-        $this->text = $text;
-        return $this;
-    }
-
-
-    public function __toString()
-    {
-        return $this->user . ' пишет: ' . $this->text . PHP_EOL;
+        return $this->uuid;
     }
 }

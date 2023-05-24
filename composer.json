@@ -1,28 +1,35 @@
 {
-  "name": "geekbrains/leveltwo",
-  "autoload": {
-    "psr-4": {
-      "GeekBrains\\LevelTwo\\": "src/",
-      "Geekbrains\\LevelTwo\\UnitTests\\": "tests/"
-    }
-  },
-  "authors": [
-    {
-      "name": "VadimKozhushko",
-      "email": "kvad230885@gmail.com"
-    }
-  ],
-  "require": {
-    "fakerphp/faker": "^1.20",
-    "ext-pdo": "*",
-    "symfony/polyfill-uuid": "^1.26",
-    "ext-mbstring": "*"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^9.5",
-    "roave/security-advisories": "dev-latest"
-  },
-  "scripts": {
-    "test": "phpunit tests --testdox --colors"
-  }
+    "name": "geekbrains/level_two",
+    "autoload": {
+        "psr-4": {
+            "GeekBrains\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GeekBrains\\Blog\\UnitTests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VadimKozhushko",
+            "email": "kvad230885@gmail.com"
+        }
+        ],
+        
+    "require": {
+        "symfony/polyfill-uuid": "^1.27",
+        "psr/container": "^2.0",
+        "monolog/monolog": "^3.3",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.21",
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "^10.1"
+    },
+    "scripts": {
+        "test": "phpunit tests --testdox --colors"
+        }
+        
 }
