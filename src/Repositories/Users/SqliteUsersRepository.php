@@ -23,14 +23,27 @@ class SqliteUsersRepository implements UsersRepositoryInterface
 
         // Подготавливаем запрос
         $statement = $this->connection->prepare(
-            'INSERT INTO users (uuid, username, password, first_name, last_name)
-            VALUES (:uuid, :username, :password, :first_name, :last_name)'
+            'INSERT INTO users (
+        uuid,
+username,
+password,
+first_name,
+last_name
+)
+VALUES (
+:uuid,
+:username,
+:password,
+:first_name,
+:last_name
+)
+ON CONFLICT (uuid) DO UPDATE SET
+first_name = :first_name,
+last_name = :last_name'
         );
 
-        $user_uuid = $user->uuid();
-        // Выполняем запрос с конкретными значениями
         $statement->execute([
-            ':uuid' => (string)$user_uuid,
+            ':uuid' => (string)$user->uuid(),
             ':username' => $user->username(),
             ':password' => $user->hashedPassword(),
             ':first_name' => $user->name()->first(),

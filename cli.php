@@ -1,32 +1,31 @@
 <?php
 
-use GeekBrains\Blog\Exceptions\AppException;
-use GeekBrains\Commands\Arguments;
-use GeekBrains\Commands\CreateUserCommand;
-use Psr\Log\LoggerInterface;
+use GeekBrains\Commands\CreateUser;
+use GeekBrains\Commands\DeletePost;
+use GeekBrains\Commands\FakeData\PopulateDB;
+use GeekBrains\Commands\UpdateUser;
+use Symfony\Component\Console\Application;
 
-
-require_once __DIR__ . '/vendor/autoload.php';
 
 $container = require __DIR__ . '/bootstrap.php';
 
-$command = $container->get(CreateUserCommand::class);
+// Создаём объект приложения
+$application = new Application();
 
-$logger = $container->get(LoggerInterface::class);
+// Перечисляем классы команд
+$commandsClasses = [
+    CreateUser::class,
+    DeletePost::class,
+    UpdateUser::class,
+    PopulateDB::class,
 
-
-try {
-    $command->handle(Arguments::fromArgv($argv));
-} catch (AppException $e) {
-    $logger->error($e->getMessage(), ['exception' => $e]);
+];
+foreach ($commandsClasses as $commandClass) {
+// Посредством контейнера
+// создаём объект команды
+    $command = $container->get($commandClass);
+// Добавляем команду к приложению
+    $application->add($command);
 }
-
-///Проверка создания поста
-/*user = $usersRepository->getByUsername("ivan");
-$faker = Faker\Factory::create('ru_RU');
-
-$postsRepository = new SqlitePostsRepository($connection);
-
-$postCommand = new CreatePostCommand($postsRepository);
-
-$postCommand->handle($user, $faker);*/
+// Запускаем приложение
+$application->run();
