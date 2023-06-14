@@ -1,21 +1,27 @@
 <?php
 
-namespace GeekBrains\LevelTwo\Blog;
+namespace GeekBrains\Blog;
+
+use GeekBrains\Person\User;
+use GeekBrains\Person\UUID;
 
 class Comment
 {
-
     public function __construct(
         private UUID $uuid,
-        private User $user,
+        private User $author,
         private Post $post,
         private string $text
-    )
+    ) {
+    }
+
+    public function __toString()
     {
+        return $this->text;
     }
 
     /**
-     * @return UUID
+     * Get the value of uuid
      */
     public function uuid(): UUID
     {
@@ -23,31 +29,15 @@ class Comment
     }
 
     /**
-     * @param int $id
+     * Get the value of author
      */
-    public function setId(int $id): void
+    public function getAuthor(): User
     {
-        $this->id = $id;
+        return $this->author;
     }
 
     /**
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * @return Post
+     * Get the value of post
      */
     public function getPost(): Post
     {
@@ -55,31 +45,10 @@ class Comment
     }
 
     /**
-     * @param Post $post
-     */
-    public function setPost(Post $post): void
-    {
-        $this->post = $post;
-    }
-
-    /**
-     * @return string
+     * Get the value of text
      */
     public function getText(): string
     {
         return $this->text;
     }
-
-    /**
-     * @param string $text
-     */
-    public function setText(string $text): void
-    {
-        $this->text = $text;
-    }
-
-    public function __toString() {
-        return $this->user . " пишет Коммент " . $this->text;
-    }
-
 }

@@ -1,46 +1,39 @@
 <?php
 
-namespace Geekbrains\LevelTwo\Http\Actions\Post;
+namespace GeekBrains\Http\Actions\Posts;
 
-use Geekbrains\LevelTwo\Blog\Exceptions\AppException;
-use Geekbrains\LevelTwo\Blog\Exceptions\CommandException;
-use Geekbrains\LevelTwo\Blog\Exceptions\HttpException;
-use Geekbrains\LevelTwo\Blog\Exceptions\InvalidArgumentException;
-use Geekbrains\LevelTwo\Blog\Repositories\PostsRepository\PostsRepositoryInterface;
-use Geekbrains\LevelTwo\Blog\UUID;
-use Geekbrains\LevelTwo\Http\Actions\ActionInterface;
-use Geekbrains\LevelTwo\Http\ErrorResponse;
-use Geekbrains\LevelTwo\Http\Request;
-use Geekbrains\LevelTwo\Http\Response;
-use Geekbrains\LevelTwo\Http\SuccessfulResponse;
+use GeekBrains\Blog\Exceptions\PostNotFoundException;
+use GeekBrains\Http\ActionInterface;
+use GeekBrains\Http\ErrorResponse;
+use GeekBrains\Http\Request;
+use GeekBrains\Http\Response;
+use GeekBrains\Http\SuccessfulResponse;
+use GeekBrains\Person\UUID;
+use GeekBrains\Repositories\Posts\PostsRepositoryInterface;
 
-class DeletePost implements ActionInterface
+readonly class DeletePost implements ActionInterface
 {
-
-
-  public function __construct(
-    private PostsRepositoryInterface $postsRepository
-  ) {
-  }
-
-  /**
-   * @throws HttpException
-   * @throws InvalidArgumentException
-   */
-  public function handle(Request $request): Response
-  {
-    try {
-      $uuid = $request->jsonBodyField('uuid');
-    } catch (HttpException $e) {
-      return new ErrorResponse($e->getMessage());
+    public function __construct(
+        private PostsRepositoryInterface $postsRepository
+    )
+    {
     }
 
 
-    $this->postsRepository->delete(new UUID($uuid));
+    public function handle(Request $request): Response
+    {
+        try {
+            $postUuid = $request->query('uuid');
+            $this->postsRepository->get(new UUID($postUuid));
 
-    return new SuccessfulResponse([
-      'delete' => 'true',
-      'uuid' => (string)$uuid
-    ]);
-  }
+        } catch (PostNotFoundException $error) {
+            return new ErrorResponse($error->getMessage());
+        }
+
+        $this->postsRepository->delete(new UUID($postUuid));
+
+        return new SuccessfulResponse([
+            'uuid' => $postUuid,
+        ]);
+    }
 }

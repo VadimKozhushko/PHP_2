@@ -1,40 +1,31 @@
 <?php
-require_once __DIR__ .  "/vendor/autoload.php";
 
-use Geekbrains\LevelTwo\Blog\Commands\Arguments;
-use Geekbrains\LevelTwo\Blog\Commands\CreateCommentCommand;
-use Geekbrains\LevelTwo\Blog\Commands\CreatePostCommand;
-use Geekbrains\LevelTwo\Blog\Commands\CreateUserCommand;
-use Geekbrains\LevelTwo\Blog\Commands\OtherArguments;
-use Geekbrains\LevelTwo\Blog\Comment;
-use Geekbrains\LevelTwo\Blog\Post;
-use Geekbrains\LevelTwo\Blog\Repositories\CommentsRepository\SqliteCommentsRepository;
-use Geekbrains\LevelTwo\Blog\Repositories\PostRepositories\SqlitePostsRepository;
-use Geekbrains\LevelTwo\Blog\Repositories\UsersRepository\SqliteUsersRepository;
-use \Geekbrains\LevelTwo\Blog\Exceptions\CommandException;
-use Geekbrains\LevelTwo\Blog\UUID;
-use \Geekbrains\LevelTwo\Blog\Exceptions\ArgumentsException;
-use Geekbrains\LevelTwo\Blog\User;
-use Geekbrains\LevelTwo\Person\Name;
-
-$connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
-$usersRepository = new SqliteUsersRepository($connection);
+use GeekBrains\Commands\CreateUser;
+use GeekBrains\Commands\DeletePost;
+use GeekBrains\Commands\FakeData\PopulateDB;
+use GeekBrains\Commands\UpdateUser;
+use Symfony\Component\Console\Application;
 
 
-try {
+$container = require __DIR__ . '/bootstrap.php';
 
-    $postRepository->delete(new UUID('02000775-c963-43a3-b644-36bf95caf7c4'));
-    $command = new CreateUserCommand($usersRepository);
-    $command->handle(Arguments::fromArgv($argv));
+// Создаём объект приложения
+$application = new Application();
 
-    $user = new User(new UUID(UUID::random()), new Name('Lev', 'Petrushin'), 'lev2022');
-    $post = $postCommand->get(new UUID('acbc10fe-78a2-4c47-8833-8ebbc34a9bcb'));
-    var_dump($post);
-    $user = new User(new UUID(UUID::random()), new Name('Lev', 'Petrushin'), 'lev2022');
+// Перечисляем классы команд
+$commandsClasses = [
+    CreateUser::class,
+    DeletePost::class,
+    UpdateUser::class,
+    PopulateDB::class,
 
-    $post = $postCommand->getPost(new UUID('acbc10fe-78a2-4c47-8833-8ebbc34a9bcb'));
-} catch (CommandException $ex) {
-    echo $ex->getMessage();
-} catch (ArgumentsException $e) {
-    echo $e->getMessage();
+];
+foreach ($commandsClasses as $commandClass) {
+// Посредством контейнера
+// создаём объект команды
+    $command = $container->get($commandClass);
+// Добавляем команду к приложению
+    $application->add($command);
 }
+// Запускаем приложение
+$application->run();
